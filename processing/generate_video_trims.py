@@ -36,16 +36,8 @@ class GenerateVideoTrims:
             # Iterate over the rows of the dataframe
             for index, row in df.iterrows():
 
-                payload = {
-                    "start_frame": row['start_frame'],
-                    "end_frame": row['end_frame'],
-                    "bbox": [row['w0'], row['h0'], row['w'], row['h']],
-                    "frame_rate": row['frame_rate']
-                }
-
-                file_name, extention = row['name'].split('.')
-                output_file_name = f"{file_name}_{row['start_frame']}_{row['end_frame']}.{extention}"
-                output_file_path = f"{self.trim_output_dir}/{output_file_name}"
+                payload = self.form_payload(row)
+                output_file_path, output_file_name = self.form_file_path(row, self.trim_output_dir)
 
                 result = video_trimmer.trim_video(payload, os.path.join(self.video_dir, row['name']), output_file_path)
 
@@ -54,11 +46,8 @@ class GenerateVideoTrims:
                     raise ThrowError(f"Error in trimming video: {row['name']}")
                 else:
                     current_app.logger.info(f"{__class__.__name__} -- Trimmed video: {output_file_path}")
-                    file = {
-                        "name": output_file_name,
-                        "output_dir": self.trim_output_dir
-                    }
-                    created_files.append(file)
+                    
+                    created_files.append(self.form_response(output_file_name, self.trim_output_dir))
 
         
             return created_files
@@ -68,3 +57,27 @@ class GenerateVideoTrims:
             current_app.logger.error(f"{__class__.__name__} -- Error in generating video trims: {e}")
             raise ThrowError(f"Error in generating video trims: {e}")
         
+
+
+    def form_payload(self, row):
+        return {
+                    "start_frame": row['start_frame'],
+                    "end_frame": row['end_frame'],
+                    "bbox": [row['w0'], row['h0'], row['w'], row['h']],
+                    "frame_rate": row['frame_rate']
+        }
+    
+
+    def form_file_path(self, row, dir):
+        file_name, extension = row['name'].split('.')
+        output_file_name = f"{file_name}_{row['start_frame']}_{row['end_frame']}.{extension}"
+        output_file_path = os.path.join(dir, output_file_name)
+
+        return output_file_path, output_file_name
+    
+
+    def form_response(self, file, dir):
+        return {
+            "name": file,
+            "output_dir": dir
+        }

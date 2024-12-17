@@ -56,4 +56,5 @@ class VideoTrimmer:
         
         except Exception as e:
             current_app.logger.error(f"{__class__.__name__} -- {traceback.format_exc()} -- Error in trimming video: {e}")
-            raise ThrowError(f"Error in trimming video: {e}")
+            return False
+            
