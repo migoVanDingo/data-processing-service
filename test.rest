@@ -1,0 +1,23 @@
+###
+# Encode session video for label studio
+POST http://localhost:5011/api/processing/encode/video/label-studio
+Content-Type: application/json
+
+{
+    "video_path": "/Users/bubz/Developer/master-project/aolme-datastore/cohort-2/level-2/school-polk/group-C/20180612/video/session_video.mp4",
+    "output_path": "/Users/bubz/Developer/master-project/aolme-datastore/cohort-2/level-2/school-polk/group-C/20180612/video/session_video_encode.mp4"
+
+}
+
+###
+#Create Session Video
+POST http://localhost:5011/api/processing/session_video
+Content-Type: application/json
+
+{
+    "video_list_path": "/Users/bubz/Developer/master-project/aolme-datastore/cohort-2/level-2/school-polk/group-C/20180612/video",
+    "output_file_path": "/Users/bubz/Developer/master-project/aolme-datastore/cohort-2/level-2/school-polk/group-C/20180612/video/session_video.mp4",
+    "fps": 30,
+    "shape": [858, 480]
+
+}
