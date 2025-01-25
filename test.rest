@@ -21,3 +21,18 @@ Content-Type: application/json
     "shape": [858, 480]
 
 }
+###
+POST http://localhost:5010/api/create
+Content-Type: application/json
+
+{
+    "table_name": "datastore",
+    "service": "datastore-management-service",
+    "request_id": "ABC123",
+    "payload": {
+      "name":"test_datastore_1",
+      "description": "test datastore desc",
+      "path": "/test/path"  
+    }
+
+}

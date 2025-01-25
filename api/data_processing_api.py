@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, g, request, jsonify
 import json
 
+from api.handler.request_reformat_label_output import RequestReformatLabelOutput
 from processing.create_session_video import CreateSessionVideo
 from processing.encode_video_for_label_studio import EncodeVideoForLabelStudio
 
@@ -40,3 +41,25 @@ def delete_data():
     data = json.loads(request.data)
     # Delete the data here
     return None
+
+
+
+@data_processing_api.route('/api/data/reformat-exported-frames', methods=['POST'])
+def reformat_exported_frames():
+    data = json.loads(request.data)
+    if "request_id" in data:
+        request_id = data['request_id']
+    elif "job_id" in data:
+        request_id = data['job_id']
+    else:
+        request_id = g.request_id
+    
+    api_request = RequestReformatLabelOutput(request_id, data)
+    response = api_request.do_process()
+
+    # if response["status"] == "SUCCESS":
+    #     res_data = response["data"]
+    #     res_data.update(data)
+    #     return { "status": response["status"], "data": res_data}
+
+    return response
