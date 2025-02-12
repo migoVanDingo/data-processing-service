@@ -1,5 +1,4 @@
-from flask_mysqldb import MySQL
-from flask import current_app
+""" from flask import current_app
 
 from utility.error import ThrowError
 
@@ -47,3 +46,4 @@ class Database:
         with self.app.app_context():  # Ensure the app context is active
             connection = self.mysql.connect  # Get the actual connection object
             return connection
+ """

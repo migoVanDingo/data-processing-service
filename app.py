@@ -4,7 +4,6 @@ import uuid
 
 from flask import Flask, g, jsonify, make_response, request
 from flask_cors import CORS
-from flask_mysqldb import MySQL
 
 from utility.error import ThrowError
 from dotenv import load_dotenv
@@ -22,13 +21,6 @@ CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://l
 from api.data_processing_api import data_processing_api
 app.register_blueprint(data_processing_api, url_prefix='/api')
 
-def init_db(app):
-    db = MySQL(app)
-    db.init_app(app)
-    return db
-
-
-db = init_db(app)
 
 @app.before_request
 def handle_options():
