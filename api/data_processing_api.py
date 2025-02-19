@@ -44,7 +44,7 @@ def delete_data():
 
 
 
-@data_processing_api.route('/api/data/reformat-exported-frames', methods=['POST'])
+@data_processing_api.route('/data/reformat-exported-frames', methods=['POST'])
 def reformat_exported_frames():
     data = json.loads(request.data)
     if "request_id" in data:
@@ -57,9 +57,9 @@ def reformat_exported_frames():
     api_request = RequestReformatLabelOutput(request_id, data)
     response = api_request.do_process()
 
-    # if response["status"] == "SUCCESS":
-    #     res_data = response["data"]
-    #     res_data.update(data)
-    #     return { "status": response["status"], "data": res_data}
+    if response["status"] == "SUCCESS":
+        res_data = response["data"]
+        res_data.update(data)
+        return { "status": response["status"], "data": res_data}
 
     return response
